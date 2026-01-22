@@ -1,14 +1,22 @@
 <main>
-  @if (joke && !error) {
-    <h1>Here is a joke for you:</h1>
-    <p>{{ joke.setup }}</p>
-    <p>
-      <strong>{{ joke.punchline }}</strong>
-    </p>
+  @if (state$ | async; as state) {
+    @if (state.joke && !state.error) {
+      <h1>Here is a joke for you:</h1>
+      <p>{{ state.joke.setup }}</p>
+      <p>
+        <strong>{{ state.joke.punchline }}</strong>
+      </p>
+    }
+
+    @if (state.loading) {
+      <h1>Loading...</h1>
+    }
+
+    @if (state.error) {
+      <h1>Oops! Something went wrong.</h1>
+      <p>{{ state.error }}</p>
+    }
   }
 
-  @if (error) {
-    <h1>Oops! Something went wrong.</h1>
-    <p>{{ error }}</p>
-  }
+  <button (click)="newJoke()">New joke</button>
 </main>

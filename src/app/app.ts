@@ -1,24 +1,19 @@
 import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { JokeService } from './services/joke/joke.service';
-import type { Joke } from './services/joke/joke.service';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   private readonly jokeService = inject(JokeService);
-  joke: Joke | null = null;
-  error: string | null = null;
-  constructor() {
+
+  readonly state$ = this.jokeService.state$;
+
+  newJoke() {
     this.jokeService.fetchJoke();
-    this.jokeService.joke$.subscribe((joke) => {
-      this.joke = joke;
-    });
-    this.jokeService.error$.subscribe((error) => {
-      this.error = error;
-    });
   }
 }
